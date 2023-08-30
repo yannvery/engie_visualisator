@@ -69,6 +69,26 @@ raw_data = """
             },
             "flagMoisCourant": false,
             "nbCadrans": 3
+        },
+        {
+            "dateDebutReleve": "2020-12-01 00:00:00.000",
+            "dateFinReleve": "2020-12-31 00:00:00.000",
+            "montantGlobalTTC": 266.0,
+            "montantGlobalTTCNotRounded": 265.16,
+            "montantGlobalHT": 224.0,
+            "consoGlobal": 1489.0,
+            "consoGlobalm3": null,
+            "kpcs": null,
+            "montantGlobalConsoTTC": 247.17,
+            "montantGlobalConsoHT": 205.98,
+            "montantGlobalAboTTC": 17.99,
+            "montantGlobalAboHT": 17.04,
+            "calendrier": {
+                "mois": 12,
+                "annee": 2020
+            },
+            "flagMoisCourant": false,
+            "nbCadrans": 3
         }
     ]
 }
@@ -77,10 +97,6 @@ raw_data = """
 
 ```elixir
 {:ok, json} = Jason.decode(raw_data)
-```
-
-```elixir
-json["listeConsoAnnee"]
 ```
 
 ## Graph
@@ -92,10 +108,58 @@ alias VegaLite, as: Vl
 data = json["listeConsoCalendaire"]
 
 # Création du graphique
-Vl.new(width: 720, height: 400)
+Vl.new(title: "Consommation globale kWh / mois", width: 720, height: 400)
 |> Vl.data_from_values(data)
 |> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
 |> Vl.encode_field(:y, "consoGlobal", title: "Consommation Globale", type: :quantitative)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.mark(:line)
+```
+
+```elixir
+alias VegaLite, as: Vl
+
+# Vos données
+data = json["listeConsoCalendaire"]
+
+# Création du graphique
+Vl.new(title: "Montant total TTC/ mois", width: 720, height: 400)
+|> Vl.data_from_values(data)
+|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
+|> Vl.encode_field(:y, "montantGlobalTTC", title: "Montant total TTC", type: :quantitative)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.mark(:line)
+```
+
+```elixir
+alias VegaLite, as: Vl
+
+# Vos données
+data = json["listeConsoCalendaire"]
+
+# Création du graphique
+Vl.new(title: "Abonnement / mois", width: 720, height: 400)
+|> Vl.data_from_values(data)
+|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
+|> Vl.encode_field(:y, "montantGlobalAboTTC", title: "Abonnement", type: :quantitative)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.mark(:line)
+```
+
+```elixir
+alias VegaLite, as: Vl
+
+# Vos données
+data = json["listeConsoCalendaire"]
+
+# Création du graphique
+Vl.new(title: "Consommation / mois", width: 720, height: 400)
+|> Vl.data_from_values(data)
+|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
+|> Vl.encode_field(:y, "montantGlobalConsoTTC",
+  title: "Consommation (sans abonnement)",
+  type: :quantitative
+)
 |> Vl.encode_field(:color, "calendrier.annee", title: "Année")
 |> Vl.mark(:line)
 ```
