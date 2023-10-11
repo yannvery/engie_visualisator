@@ -4,7 +4,8 @@
 Mix.install([
   {:vega_lite, "~> 0.1.6"},
   {:kino_vega_lite, "~> 0.1.6"},
-  {:jason, "~> 1.4.1"}
+  {:jason, "~> 1.4.1"},
+  {:kino_explorer, "~> 0.1.4"}
 ])
 ```
 
@@ -16,86 +17,17 @@ Go to https://particuliers.engie.fr/espace-client/consommations.html.
 * Open the Network tab
 * Search the request named "consoMoisAnnee" and click on it
 * Click on the sub tab `Response`
-* Copy paste the content in the following block like
-
-<!-- livebook:{"force_markdown":true} -->
+* Copy paste the content in a file `conso.json`
+* Drag the file in the box below
 
 ```elixir
-raw_data = """
-<paste>
-"""
+file = Kino.Input.file("Your data file")
 ```
 
 ```elixir
-raw_data = """
-{
-    "listeConsoCalendaire": [
-        {
-            "dateDebutReleve": "2020-10-01 00:00:00.000",
-            "dateFinReleve": "2020-10-31 00:00:00.000",
-            "montantGlobalTTC": 143.0,
-            "montantGlobalTTCNotRounded": 142.42,
-            "montantGlobalHT": 121.0,
-            "consoGlobal": 761.0,
-            "consoGlobalm3": null,
-            "kpcs": null,
-            "montantGlobalConsoTTC": 124.42,
-            "montantGlobalConsoHT": 103.69,
-            "montantGlobalAboTTC": 17.99,
-            "montantGlobalAboHT": 17.05,
-            "calendrier": {
-                "mois": 10,
-                "annee": 2020
-            },
-            "flagMoisCourant": false,
-            "nbCadrans": 3
-        },
-        {
-            "dateDebutReleve": "2020-11-01 00:00:00.000",
-            "dateFinReleve": "2020-11-30 00:00:00.000",
-            "montantGlobalTTC": 189.0,
-            "montantGlobalTTCNotRounded": 188.99,
-            "montantGlobalHT": 160.0,
-            "consoGlobal": 1043.0,
-            "consoGlobalm3": null,
-            "kpcs": null,
-            "montantGlobalConsoTTC": 171.62,
-            "montantGlobalConsoHT": 143.02,
-            "montantGlobalAboTTC": 17.37,
-            "montantGlobalAboHT": 16.46,
-            "calendrier": {
-                "mois": 11,
-                "annee": 2020
-            },
-            "flagMoisCourant": false,
-            "nbCadrans": 3
-        },
-        {
-            "dateDebutReleve": "2020-12-01 00:00:00.000",
-            "dateFinReleve": "2020-12-31 00:00:00.000",
-            "montantGlobalTTC": 266.0,
-            "montantGlobalTTCNotRounded": 265.16,
-            "montantGlobalHT": 224.0,
-            "consoGlobal": 1489.0,
-            "consoGlobalm3": null,
-            "kpcs": null,
-            "montantGlobalConsoTTC": 247.17,
-            "montantGlobalConsoHT": 205.98,
-            "montantGlobalAboTTC": 17.99,
-            "montantGlobalAboHT": 17.04,
-            "calendrier": {
-                "mois": 12,
-                "annee": 2020
-            },
-            "flagMoisCourant": false,
-            "nbCadrans": 3
-        }
-    ]
-}
-"""
-```
-
-```elixir
+file_input = Kino.Input.read(file)
+path = Kino.Input.file_path(file_input.file_ref)
+raw_data = File.read!(path)
 {:ok, json} = Jason.decode(raw_data)
 ```
 
