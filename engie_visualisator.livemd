@@ -36,15 +36,13 @@ raw_data = File.read!(path)
 ```elixir
 alias VegaLite, as: Vl
 
-# Vos données
 data = json["listeConsoCalendaire"]
 
-# Création du graphique
-Vl.new(title: "Consommation globale kWh / mois", width: 720, height: 400)
+Vl.new(title: "Total Consumption in kWh per Month", width: 720, height: 400)
 |> Vl.data_from_values(data)
-|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
-|> Vl.encode_field(:y, "consoGlobal", title: "Consommation Globale", type: :quantitative)
-|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.encode_field(:x, "calendrier.mois", title: "Month")
+|> Vl.encode_field(:y, "consoGlobal", title: "Total Consumption in kWh", type: :quantitative)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Year")
 |> Vl.mark(:line)
 ```
 
@@ -55,11 +53,14 @@ alias VegaLite, as: Vl
 data = json["listeConsoCalendaire"]
 
 # Création du graphique
-Vl.new(title: "Montant total TTC/ mois", width: 720, height: 400)
+Vl.new(title: "Total Amount Including Tax per Month", width: 720, height: 400)
 |> Vl.data_from_values(data)
-|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
-|> Vl.encode_field(:y, "montantGlobalTTC", title: "Montant total TTC", type: :quantitative)
-|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.encode_field(:x, "calendrier.mois", title: "Month")
+|> Vl.encode_field(:y, "montantGlobalTTC",
+  title: "Total Amount Including Tax",
+  type: :quantitative
+)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Year")
 |> Vl.mark(:line)
 ```
 
@@ -70,11 +71,11 @@ alias VegaLite, as: Vl
 data = json["listeConsoCalendaire"]
 
 # Création du graphique
-Vl.new(title: "Abonnement / mois", width: 720, height: 400)
+Vl.new(title: "Monthly Subscription Cost", width: 720, height: 400)
 |> Vl.data_from_values(data)
-|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
-|> Vl.encode_field(:y, "montantGlobalAboTTC", title: "Abonnement", type: :quantitative)
-|> Vl.encode_field(:color, "calendrier.annee", title: "Année")
+|> Vl.encode_field(:x, "calendrier.mois", title: "Month")
+|> Vl.encode_field(:y, "montantGlobalAboTTC", title: "Subscription cost", type: :quantitative)
+|> Vl.encode_field(:color, "calendrier.annee", title: "Year")
 |> Vl.mark(:line)
 ```
 
@@ -85,11 +86,11 @@ alias VegaLite, as: Vl
 data = json["listeConsoCalendaire"]
 
 # Création du graphique
-Vl.new(title: "Consommation / mois", width: 720, height: 400)
+Vl.new(title: "Monthly Usage Cost", width: 720, height: 400)
 |> Vl.data_from_values(data)
-|> Vl.encode_field(:x, "calendrier.mois", title: "Mois")
+|> Vl.encode_field(:x, "calendrier.mois", title: "Month")
 |> Vl.encode_field(:y, "montantGlobalConsoTTC",
-  title: "Consommation (sans abonnement)",
+  title: "Monthly Usage Cost (without subscription)",
   type: :quantitative
 )
 |> Vl.encode_field(:color, "calendrier.annee", title: "Année")
